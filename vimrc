@@ -123,7 +123,7 @@ let g:lightline = {
       \   'right': [['lineinfo'], ['percent']]
       \ },
       \ 'component_function': {
-      \   'gutentags': 'LightlineGutentags',
+      \   'gutentags': 'gutentags#statusline',
       \   'cocstatus': 'coc#status',
       \ },
       \ 'component': {
@@ -215,8 +215,8 @@ nnoremap <leader>a :A<CR>
 nnoremap <leader>F :ClangFormat<CR>
 
 " 快速注释
-nmap <leader>c <Plug>CommentaryLine
-xmap <leader>c <Plug>Commentary
+nmap <leader>/ <Plug>CommentaryLine
+xmap <leader>/ <Plug>Commentary
 
 " ============================================
 " vim-gutentags 完整配置
@@ -258,7 +258,7 @@ let g:gutentags_gtags_options = [
 " 4. 启用 cscope 支持（Global 内置）
 let g:gutentags_plus_switch = 1
 
-let g:gutentags_plus_nomap = 1  " 禁用默认映射，使用自定义
+let g:gutentags_plus_nomap = 0  " 禁用默认映射，使用自定义
 "0 or s: Find this symbol
 "1 or g: Find this definition
 "2 or d: Find functions called by this function
@@ -268,16 +268,16 @@ let g:gutentags_plus_nomap = 1  " 禁用默认映射，使用自定义
 "7 or f: Find this file
 "8 or i: Find files #including this file
 "9 or a: Find places where this symbol is assigned a value
-noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
-noremap <silent> <leader>gg :GscopeFind g <C-R><C-W><cr>
-noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
-noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
-noremap <silent> <leader>ge :GscopeFind e <C-R><C-W><cr>
-noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
-noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
-noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
-noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
-noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
+" noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
+" noremap <silent> <leader>gg :GscopeFind g <C-R><C-W><cr>
+" noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
+" noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
+" noremap <silent> <leader>ge :GscopeFind e <C-R><C-W><cr>
+" noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
+" noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
+" noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
+" noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
+" noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
 
 " preview configure
 "noremap <M-u> :PreviewScroll -1<cr>
@@ -326,43 +326,39 @@ autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
 "    \ 'configure', 'configure.ac', 'meson.build', 'setup.py'
 "    \ ]
 
-let g:gutentags_project_root = [
-    \ '.root', '.git', '.svn', '.hg',
-    \ 'compile_commands.json',
-    \ 'configure', 'configure.ac', 'meson.build', 'setup.py'
-    \ ]
+let g:gutentags_project_root = ['.root']
 
 " 排除目录
-let g:gutentags_ctags_exclude = [
-    \ '*.git', '*.svn', '*.hg',
-    \ '*/build/*', '*/dist/*', '*/bin/*',
-    \ '*/node_modules/*', '*/bower_components/*',
-    \ '*/__pycache__/*', '*/venv/*',
-    \ '*.so', '*.dll', '*.exe', '*.o', '*.obj',
-    \ '#.dts', '*.dtsi'
-    \ ]
+" let g:gutentags_ctags_exclude = [
+"     \ '*.git', '*.svn', '*.hg',
+"     \ '*/build/*', '*/dist/*', '*/bin/*',
+"     \ '*/node_modules/*', '*/bower_components/*',
+"     \ '*/__pycache__/*', '*/venv/*',
+"     \ '*.so', '*.dll', '*.exe', '*.o', '*.obj',
+"     \ '#.dts', '*.dtsi'
+"     \ ]
 
 " C/C++ 专用ctags配置
-let g:gutentags_ctags_tagfile = '.tags'
-let g:gutentags_ctags_extra_args = [
-    \ '--fields=+niazS',
-    \ '--extras=+q',
-    \ '--c++-kinds=+p',
-    \ '--c-kinds=+p',
-    \ '--langmap=C++:+.c++.cc.cp.cpp.cxx.h.h++.hh.hp.hpp.hxx.inl.txx.moc',
-    \ '--langmap=C:+.c.h',
-    \ '--regex-C++=/^[[:space:]]*namespace[[:space:]]+([A-Za-z_][A-Za-z0-9_]*)/\1/n,namespace/',
-    \ '--regex-C++=/^[[:space:]]*class[[:space:]]+([A-Za-z_][A-Za-z0-9_]*)/\1/c,class/',
-    \ '--regex-C++=/^[[:space:]]*struct[[:space:]]+([A-Za-z_][A-Za-z0-9_]*)/\1/s,struct/',
-    \ '--regex-C++=/^[[:space:]]*enum[[:space:]]+([A-Za-z_][A-Za-z0-9_]*)/\1/g,enum/',
-    \ '--regex-C++=/^[[:space:]]*([A-Za-z_][A-Za-z0-9_]*)[[:space:]]*\([^)]*\)[[:space:]]*\{/\1/f,function/',
-    \ '--exclude=*/build/*',
-    \ '--exclude=*/test/*',
-    \ '--exclude=ThirdParty'
-    \ ]
+" let g:gutentags_ctags_tagfile = '.tags'
+" let g:gutentags_ctags_extra_args = [
+    " \ '--fields=+niazS',
+    " \ '--extras=+q',
+    " \ '--c++-kinds=+p',
+    " \ '--c-kinds=+p',
+    " \ '--langmap=C++:+.c++.cc.cp.cpp.cxx.h.h++.hh.hp.hpp.hxx.inl.txx.moc',
+    " \ '--langmap=C:+.c.h',
+    " \ '--regex-C++=/^[[:space:]]*namespace[[:space:]]+([A-Za-z_][A-Za-z0-9_]*)/\1/n,namespace/',
+    " \ '--regex-C++=/^[[:space:]]*class[[:space:]]+([A-Za-z_][A-Za-z0-9_]*)/\1/c,class/',
+    " \ '--regex-C++=/^[[:space:]]*struct[[:space:]]+([A-Za-z_][A-Za-z0-9_]*)/\1/s,struct/',
+    " \ '--regex-C++=/^[[:space:]]*enum[[:space:]]+([A-Za-z_][A-Za-z0-9_]*)/\1/g,enum/',
+    " \ '--regex-C++=/^[[:space:]]*([A-Za-z_][A-Za-z0-9_]*)[[:space:]]*\([^)]*\)[[:space:]]*\{/\1/f,function/',
+    " \ '--exclude=*/build/*',
+    " \ '--exclude=*/test/*',
+    " \ '--exclude=ThirdParty'
+    " \ ]
 
 " 如果使用 universal ctags 需要增加下面一行，老的 Exuberant-ctags 不能加下一行
-let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
+" let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
 
 
 " 文件类型
@@ -393,7 +389,7 @@ let g:gutentags_filetypes = ['c', 'cpp', 'objc', 'objcpp']
 "endif
 
 " 禁用 gutentags 自动加载 gtags 数据库的行为
-"let g:gutentags_auto_add_gtags_cscope = 0
+let g:gutentags_auto_add_gtags_cscope = 0
 " 智能 Quickfix 自动退出
 augroup AutoCloseQuickFix
     autocmd!
